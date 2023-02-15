@@ -59,6 +59,12 @@ spec:
 
 Where `iris-model` is the name of our model, `sklearn_iris:0.1` is the name of our Docker image and `imagePullPolicy` is set to never because we are using a local image, if you want to use a image published on DockerHub remove this flag.
 
+Then run the following comand to deploy your model:
+
+```
+kubectl apply -f deployment_seldon.yaml
+```
+
 ## Send API Requests
 
 You can test using curl, remember to be running the Istio port fowarding:
