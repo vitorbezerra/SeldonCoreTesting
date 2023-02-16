@@ -4,7 +4,7 @@ Seldon Core offers to use custom images as servers, in this file we are going to
 
 ## Prepare Image
 
-# TODO: Explaing interface and setup files
+# TODO: Explain interface and setup files
 
 ## Publish Image on Minikube
 
@@ -40,16 +40,16 @@ touch deployment_seldon.yaml
 apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment
 metadata:
-  name: iris-model
-  namespace: model-namespace
+  name: <model-name>
+  namespace: <model-namespace>
 spec:
-  name: iris
+  name: <name>
   predictors:
   - componentSpecs:
     - spec:
         containers:
         - name: classifier
-          image: sklearn_iris:0.1
+          image: <image-name:version>
           imagePullPolicy: Never
     graph:
       name: classifier
@@ -57,7 +57,12 @@ spec:
     replicas: 1
 ```
 
-Where `iris-model` is the name of our model, `sklearn_iris:0.1` is the name of our Docker image and `imagePullPolicy` is set to never because we are using a local image, if you want to use a image published on DockerHub remove this flag.
+Where:
+* `<model-name>` is the name of our deployment, we can use for example the name `iris-model`;
+* `<model-namespace>` is the namespace where the model will be deployed (in this example the value should be `seldon`);
+* `<name>` is the name of the component of the deployment;
+* `<image-name:version>` is the name of our Docker image;
+* `imagePullPolicy` is set to `Never` because we are using a local image, if you want to use a image published on DockerHub remove this flag.
 
 Then run the following comand to deploy your model:
 
@@ -68,6 +73,10 @@ kubectl apply -f deployment_seldon.yaml
 ## Send API Requests
 
 You can test using curl, remember to be running the Istio port fowarding:
+
+```
+kubectl port-forward -n istio-system svc/istio-ingressgateway 8080:80
+```
 
 ```
 curl -X POST http://localhost:8080/seldon/seldon/iris-model/api/v1.0/predictions \
@@ -82,12 +91,10 @@ You can also test by accessing the web browser version on the following URL on y
 
 ## Removing Deployment
 
-You can remove the deployment by deleting the namespace.
-
-WARNING: This will delete all you deployments on your namespace
+You can remove the deployment by running.
 
 ```
-kubectl delete namespace seldon
+kubectl delete -f deployment_seldon.yaml
 ```
 
 # References

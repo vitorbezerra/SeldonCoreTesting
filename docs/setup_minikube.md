@@ -8,7 +8,7 @@ To test images inside Kubernets using seldon-core we can use minikube. The seldo
 curl -fsSL https://get.docker.com -o get-docker.sh
 ```
 ```
-sudo sh get-docker.sh`
+sudo sh get-docker.sh
 ```
 
 Manage Docker as non root:
@@ -19,10 +19,10 @@ sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
-Reboot the system:
+Activate the changes to groups, if does not work try to reboot the system:
 
 ```
-reboot
+newgrp docker
 ```
 Test:
 ```
