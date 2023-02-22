@@ -36,7 +36,7 @@ Then we are going to create a file with the specifics of our deployment:
 touch deployment_seldon.yaml
 ```
 
-```
+```yaml
 apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment
 metadata:

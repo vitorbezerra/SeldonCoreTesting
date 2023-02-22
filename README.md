@@ -7,3 +7,4 @@ Chapters:
 * [Setup Minikube](docs/setup_minikube.md)
 * [Test Installation With SKLEARN Server](docs/test_iris_on_sklearn.md)
 * [Run Custom Server Images using Docker](docs/custom_server_using_docker.md)
+* [Process Images](docs/seldon_process_image.md)

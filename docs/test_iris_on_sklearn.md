@@ -11,7 +11,7 @@ kubectl create namespace seldon
 ```
 
 Deploy the model
-```
+```yaml
 kubectl apply -f - << END
 apiVersion: machinelearning.seldon.io/v1
 kind: SeldonDeployment

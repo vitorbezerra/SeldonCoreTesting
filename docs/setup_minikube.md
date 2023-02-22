@@ -86,7 +86,7 @@ kubectl label namespace default istio-injection=enabled
 
 Create Gateway
 
-```
+```yaml
 kubectl apply -f - << END
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
