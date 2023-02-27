@@ -62,10 +62,6 @@ ENV SERVICE_TYPE MODEL
 # Changing folder to default user
 RUN chown -R 8888 /app
 
-WORKDIR /app/machamp/
-
-RUN python Model.py
-
 CMD exec seldon-core-microservice $MODEL_NAME --service-type $SERVICE_TYPE
 ```
 
