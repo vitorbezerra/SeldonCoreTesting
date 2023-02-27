@@ -4,7 +4,70 @@ Seldon Core offers to use custom images as servers, in this file we are going to
 
 ## Prepare Image
 
-# TODO: Explain interface and setup files
+First we need to create the server that should have this structure:
+
+```python
+class MyModel(object):
+    """
+    Model template. You can load your model parameters in __init__ from a location accessible at runtime
+    """
+
+    def __init__(self):
+        """
+        Add any initialization parameters. These will be passed at runtime from the graph definition parameters defined in your seldondeployment kubernetes resource manifest.
+        """
+        print("Initializing")
+
+    # this function is called automaticly after the __init__ when using seldon
+    def load(self):
+        print("load")
+        # load your model here
+        self.ready = True
+
+    def predict(self,X,features_names):
+        """
+        Return a prediction.
+
+        Parameters
+        ----------
+        X : array-like
+        feature_names : array of feature names (optional)
+        """
+        print("Predict called - will run identity function")
+        return [X]
+
+```
+
+The Dockerfile should follow the structure bellow:
+
+
+```Dockerfile
+# image to run
+FROM nvcr.io/nvidia/pytorch:21.06-py3
+
+COPY . /app/
+WORKDIR /app
+
+# install normal requirements and add seldon-core
+RUN pip3 install -r requirements.txt
+
+EXPOSE 5000
+# Port for REST
+EXPOSE 9000
+
+# Define environment variables
+ENV MODEL_NAME MyModel
+ENV SERVICE_TYPE MODEL
+
+# Changing folder to default user
+RUN chown -R 8888 /app
+
+WORKDIR /app/machamp/
+
+RUN python Model.py
+
+CMD exec seldon-core-microservice $MODEL_NAME --service-type $SERVICE_TYPE
+```
 
 ## Publish Image on Minikube
 
@@ -101,3 +164,5 @@ kubectl delete -f deployment_seldon.yaml
 https://levelup.gitconnected.com/two-easy-ways-to-use-local-docker-images-in-minikube-cd4dcb1a5379
 
 https://docs.seldon.io/projects/seldon-core/en/latest/workflow/github-readme.html
+
+https://docs.seldon.io/projects/seldon-core/en/latest/python/python_wrapping_docker.html
