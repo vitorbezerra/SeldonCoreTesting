@@ -4,12 +4,13 @@ Seldon Core offers to use custom images as servers, in this file we are going to
 
 ## Prepare Image
 
+### Server
 First we need to create the server that should have this structure:
 
 ```python
 class MyModel(object):
     """
-    Model template. You can load your model parameters in __init__ from a location accessible at runtime
+    Model template
     """
 
     def __init__(self):
@@ -37,20 +38,27 @@ class MyModel(object):
         return [X]
 
 ```
-
+### Requirements
+Populate a requirements.txt with any software dependencies your code requires. At a minimum the file should contain:
+```
+seldon-core 
+```
+### Define Dockerfile
 The Dockerfile should follow the structure bellow:
 
 
 ```Dockerfile
 # image to run
-FROM nvcr.io/nvidia/pytorch:21.06-py3
+FROM python:3.7-slim
 
+# copy source code
 COPY . /app/
 WORKDIR /app
 
 # install normal requirements and add seldon-core
 RUN pip3 install -r requirements.txt
 
+# Port for GRPC
 EXPOSE 5000
 # Port for REST
 EXPOSE 9000
